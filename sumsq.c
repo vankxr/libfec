@@ -36,5 +36,10 @@ unsigned long long sumsq(signed short *in,int cnt){
   case ALTIVEC:
     return sumsq_av(in,cnt);
 #endif
+
+#if __ARM_FEATURE_DSP == 1
+  case ARM:
+    return sumsq_arm(in,cnt);
+#endif
   }
 }

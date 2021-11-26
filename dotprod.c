@@ -25,6 +25,12 @@ long dotprod_av(void *p,signed short *b);
 void freedp_av(void *p);
 #endif
 
+#if __ARM_FEATURE_DSP == 1
+void *initdp_arm(signed short coeffs[],int len);
+long dotprod_arm(void *dp,signed short a[]);
+void freedp_arm(void *dp);
+#endif
+
 /* Create and return a descriptor for use with the dot product function */
 void *initdp(signed short coeffs[],int len){
   find_cpu_mode();
@@ -45,6 +51,11 @@ void *initdp(signed short coeffs[],int len){
   case ALTIVEC:
     return initdp_av(coeffs,len);
 #endif
+
+#if __ARM_FEATURE_DSP == 1
+  case ARM:
+    return initdp_arm(coeffs,len);
+#endif
   }
 }
 
@@ -64,6 +75,10 @@ void freedp(void *p){
 #ifdef __VEC__
   case ALTIVEC:
     return freedp_av(p);
+#endif
+#if __ARM_FEATURE_DSP == 1
+  case ARM:
+    return freedp_arm(p);
 #endif
   }
 }
@@ -87,6 +102,11 @@ long dotprod(void *p,signed short a[]){
 #ifdef __VEC__
   case ALTIVEC:
     return dotprod_av(p,a);
+#endif
+
+#if __ARM_FEATURE_DSP == 1
+  case ARM:
+    return dotprod_arm(p,a);
 #endif
   }
 }

@@ -258,7 +258,7 @@ extern unsigned char Taltab[],Tal1tab[];
 
 
 /* CPU SIMD instruction set available */
-extern enum cpu_mode {UNKNOWN=0,PORT,MMX,SSE,SSE2,ALTIVEC} Cpu_mode;
+extern enum cpu_mode {UNKNOWN=0,PORT,MMX,SSE,SSE2,ALTIVEC,ARM} Cpu_mode;
 void find_cpu_mode(void); /* Call this once at startup to set Cpu_mode */
 
 /* Determine parity of argument: 1 = odd, 0 = even */
@@ -322,6 +322,11 @@ void *initdp_av(signed short coeffs[],int len);
 void freedp_av(void *dp);
 long dotprod_av(void *dp,signed short a[]);
 #endif
+#if __ARM_FEATURE_DSP == 1
+void *initdp_arm(signed short coeffs[],int len);
+void freedp_arm(void *dp);
+long dotprod_arm(void *dp,signed short a[]);
+#endif
 
 /* Sum of squares - accepts signed shorts, produces unsigned long long */
 unsigned long long sumsq(signed short *in,int cnt);
@@ -335,7 +340,9 @@ unsigned long long sumsq_sse2(signed short *in,int cnt);
 #ifdef __VEC__
 unsigned long long sumsq_av(signed short *in,int cnt);
 #endif
-
+#if __ARM_FEATURE_DSP == 1
+unsigned long long sumsq_arm(signed short *in,int cnt);
+#endif
 
 /* Low-level data structures and routines */
 

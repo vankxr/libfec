@@ -73,6 +73,9 @@ powerpc*)
 x86_64*)
 	MLIBS="cpu_mode_unknown.o"
 	;;
+arm*)
+  MLIBS="dotprod_arm.o sumsq_arm.o cpu_mode_arm.o"
+  ;;
 *)
 	MLIBS="cpu_mode_unknown.o"
 	;;
