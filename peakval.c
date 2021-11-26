@@ -16,6 +16,10 @@ int peakval_sse2(signed short *b,int cnt);
 int peakval_av(signed short *b,int cnt);
 #endif
 
+#if __ARM_FEATURE_DSP == 1
+int peakval_arm(signed short *b,int cnt);
+#endif
+
 int peakval(signed short *b,int cnt){
   find_cpu_mode();
 
@@ -34,6 +38,10 @@ int peakval(signed short *b,int cnt){
 #ifdef __VEC__
   case ALTIVEC:
     return peakval_av(b,cnt);
+#endif
+#if __ARM_FEATURE_DSP == 1
+  case ARM:
+    return peakval_arm(b,cnt);
 #endif
   }
 }
